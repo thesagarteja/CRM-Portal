@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Survey Form page</title>
+    <head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .dashboard-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .dashboard-button a{
+            color:white;
+            text-decoration: none;
+        }
+        .dashboard-button:hover {
+            background-color: #0056b3;
+            color:white;
+        }
+        .survey-container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #submit {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        #submit:hover {
+            background-color: #0056b3;
+        }
+        </style>
+</head>
+<body>
+    <div class="survey-container">
+        <h1> Survey Form </h1>
+        <button class="dashboard-button" onclick="goToDashboard()"><a href="../index.html">Dashboard</a></button>
+        <form>
+            <!-- Dropdown Questions -->
+            <div class="form-group">
+                <label for="satisfaction">1. Rate your overall satisfaction with our software developement services?</label>
+                <select id="satisfaction" name="satisfaction">
+                    <option value="very_satisfied">Very Satisfied</option>
+                    <option value="satisfied">Satisfied</option>
+                    <option value="neutral">Neutral</option>
+                    <option value="dissatisfied">Dissatisfied</option>
+                    <option value="very_dissatisfied">Very Dissatisfied</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="ease_of_use">2. How easy was it to use the software developed by us?</label>
+                <select id="ease_of_use" name="ease_of_use">
+                    <option value="very_easy">Very Easy</option>
+                    <option value="easy">Easy</option>
+                    <option value="neutral">Neutral</option>
+                    <option value="difficult">Difficult</option>
+                    <option value="very_difficult">Very Difficult</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="performance">3. Rate the perfomance of the software in terms of speed and responsiveness</label>
+                <select id="performance" name="performance">
+                    <option value="excellent">Excellent</option>
+                    <option value="good">Good</option>
+                    <option value="average">Average</option>
+                    <option value="poor">Poor</option>
+                    <option value="very_poor">Very Poor</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="features">4. How satisfied are you with the features and functionality of the software?</label>
+                <select id="features" name="features">
+                    <option value="excellent">Excellent</option>
+                    <option value="good">Good</option>
+                    <option value="average">Average</option>
+                    <option value="poor">Poor</option>
+                    <option value="very_poor">Very Poor</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="support">5. Rate the quality and responsiveness of our customer support team.</label>
+                <select id="support" name="support">
+                    <option value="excellent">Excellent</option>
+                    <option value="good">Good</option>
+                    <option value="average">Average</option>
+                    <option value="poor">Poor</option>
+                    <option value="very_poor">Very Poor</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="delivery">6. How satisfied are you with the timeliness of delivery of the software?</label>
+                <select id="delivery" name="delivery">
+                    <option value="excellent">Excellent</option>
+                    <option value="good">Good</option>
+                    <option value="average">Average</option>
+                    <option value="poor">Poor</option>
+                    <option value="very_poor">Very Poor</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="value">7. Do you feel the software provided value for the money spent?</label>
+                <select id="value" name="value">
+                    <option value="excellent">Excellent</option>
+                    <option value="good">Good</option>
+                    <option value="average">Average</option>
+                    <option value="poor">Poor</option>
+                    <option value="very_poor">Very Poor</option>
+                </select>
+            </div>
+
+            <!-- Textbox Question -->
+            <div class="form-group">
+                <label for="comments">8. please provide any additional comments or suggestions for improvement?</label>
+                <textarea id="comments" name="comments" rows="4"></textarea>
+            </div>
+
+            <!-- Dropdown and Textbox Combination Questions -->
+            <div class="form-group">
+                <label for="recommend">9. Would you recommend our services?</label>
+                <select id="recommend" name="recommend">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+                <label for="recommend_details">If no, please specify why:</label>
+                <textarea id="recommend_details" name="recommend_details" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="hear_about">10. How did you hear about our company?</label>
+                <select id="hear_about" name="hear_about">
+                    <option value="internet_search">Internet Search</option>
+                    <option value="social_media">Social Media</option>
+                    <option value="friend">Friend/Colleague</option>
+                    <option value="advertisement">Advertisement</option>
+                </select>
+                <label for="hear_about_details">Please specify (if applicable):</label>
+                <textarea id="hear_about_details" name="hear_about_details" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit" id="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+<script>
+    document.getElementById('survey-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        alert('Your response is saved');
+    });
+</script>
+</body>
+</html>

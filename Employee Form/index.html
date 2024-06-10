@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employeee data Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="homefor.css">
+
+</head>
+
+<body>
+    <div class="my-dash"><a href="../index.html">Dashboard</a></div>
+    <h1>Employee DataBase</h1>
+    
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>EmployeeId</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>PrimaryAddress</th>
+                <th>SecondaryAddress</th>
+                <th>Gender</th>
+
+                <th>Aadhaar Number</th>
+                <th>PAN Number</th>
+                <th>Role</th>
+
+                <th>Experience</th>
+                <th>Reporting Manager</th>
+                <th>Known Languages</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+        </tbody>
+    </table>
+
+    <div id="createNewForm" style="display: none;">
+        <button onclick="scrollToEmployeeTable('userTable')" id="scrollToEmployeeTable">&larr; Return to Table</button>
+
+        <h1 id="title-1">Employee Form</h1>
+        <input type="text" id="newId" placeholder="EmployeeId">
+        <input type="text" id="newname" placeholder="Full name">
+        <input type="email" id="newEmail" placeholder=" Email"><br>
+        <input type="tel" id="newPhone" placeholder="Phone Number">
+        <input type="text" id="newpAddre" placeholder="primaryAddress">
+        <input type="text" id="newsAddre" placeholder="secondaryAddress"><br>
+        <input type="text" id="newGen" placeholder="Gender">
+        <input type="text" id="newAadhar" placeholder="Aadhaar Number">    
+        <input type="text" id="newPan" placeholder="PAN Number"><br>
+        <input type="text" id="newRole" placeholder="Role">
+
+        <input type="text" id="newExperience" placeholder="Experience ">
+        <input type="text" id="newReportingmanager" placeholder="Reporting Manager"><br>
+        <input type="text" id="newlanguages" placeholder="Known Languages ">
+
+        <button onclick="saveNewUser()" id="submit">Save</button>
+    </div>
+
+    <button id="createNewButton" class="my-btn" onclick="showNewUserForm()"><i class="fa-solid fa-plus fa-beat-fade"></i>&nbsp;&nbsp;Create New</button>
+
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyOvr8QUAUJI6Yqo1klnn3uFH9qpVcOwCWPhlCj9ZpOdHjkTQcaet_mu1aU-Jo6ef0EfA/exec';
+
+        function showNewUserForm() {
+            document.getElementById('createNewForm').style.display = 'block';
+            document.getElementById('userTable').style.display = 'none';
+            document.getElementById('scrollToEmployeeTable').style.display = 'block';
+        }
+
+        function saveNewUser() {
+            var newId = document.getElementById('newId').value;
+            var newname = document.getElementById('newname').value;
+            var newEmail = document.getElementById('newEmail').value;
+            var newPhone = document.getElementById('newPhone').value;
+            var newpAddre = document.getElementById('newpAddre').value;
+            var newsAddre = document.getElementById('newsAddre').value;
+            var newGen = document.getElementById('newGen').value;
+            var newAadhar = document.getElementById('newAadhar').value;
+            var newPan = document.getElementById('newPan').value;
+            var newRole = document.getElementById('newRole').value;
+            var newExperience = document.getElementById('newExperience').value;
+            var newReportingmanager = document.getElementById('newReportingmanager').value;
+            var newlanguages = document.getElementById('newlanguages').value;
+
+
+            if (newId && newname && newEmail && newPhone && newpAddre && newsAddre && newGen && newAadhar && newPan && newRole && newExperience && newReportingmanager && newlanguages ) {
+                var newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${newId}</td>
+                    <td>${newname}</td>
+                    <td>${newEmail}</td>
+                    <td>${newPhone}</td>
+                    <td>${newpAddre}</td>
+                    <td>${newsAddre}</td>
+                    <td>${newGen}</td>
+                    <td>${newAadhar}</td>
+                    <td>${newPan}</td>
+                    <td>${newRole}</td>
+                    <td>${newExperience}</td>
+                    <td>${newReportingmanager}</td>
+                    <td>${newlanguages}</td>
+
+                    <td>
+                        <button onclick="editUser(this)">Edit</button>
+                    </td>
+                `;
+
+                var userTableBody = document.getElementById('userTableBody');
+                userTableBody.appendChild(newRow);
+
+
+                 // Send data to Google Sheets
+                 fetch(scriptURL, {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                        'Id': newId,
+                        'Email': newEmail,
+                        'Phone': newPhone,
+                        'pAddre': newpAddre,
+                        'sAddre': newsAddre,
+                        'Gen': newGen,
+                        'Adhar': newAadhar,
+                        'Pan': newPan,
+                        'Role': newRole,
+                        'Experince': newExperience,
+                        'ReportingManager':newReportingmanager,
+                        'languages':newlanguages
+                    })
+                }).then(response => response.text())
+                .then(result => console.log('Success:', result))
+                .catch(error => console.error('Error:', error));
+
+                // Clear the input fields
+                document.getElementById('newId').value = '';
+                document.getElementById('newname').value = '';
+                document.getElementById('newEmail').value = '';
+                document.getElementById('newPhone').value = '';
+                document.getElementById('newpAddre').value = '';
+                document.getElementById('newsAddre').value = '';
+                document.getElementById('newGen').value = '';
+                document.getElementById('newAadhar').value = '';
+                document.getElementById('newPan').value = '';
+                document.getElementById('newRole').value = '';
+                document.getElementById('newExperience').value = '';
+                document.getElementById('newReportingmanager').value = '';
+                document.getElementById('newlanguages').value = '';
+
+                document.getElementById('createNewForm').style.display = 'none';
+                document.getElementById('userTable').style.display = 'table';
+            } /*else {
+                alert('Please enter all user details.');
+            }*/
+        }
+
+        function editUser(button) {
+            var row = button.parentNode.parentNode;
+            var cells = row.querySelectorAll('td');
+
+            for (var i = 0; i < cells.length - 1; i++) {
+                cells[i].innerHTML = `<input type="text" value="${cells[i].textContent}">`;
+            }
+
+            // Show Save button
+            button.style.display = 'none';
+            var saveButton = document.createElement('button');
+            saveButton.textContent = 'Save';
+            saveButton.onclick = function () {
+                saveUser(this);
+            };
+            row.lastElementChild.appendChild(saveButton);
+        }
+
+        function saveUser(button) {
+            var row = button.parentNode.parentNode;
+            var cells = row.querySelectorAll('td input');
+
+            var isValid = true;
+            for (var i = 0; i < cells.length; i++) {
+                if (!cells[i].value) {
+                    isValid = false;
+                    break;
+                }
+            }
+
+            if (isValid) {
+                for (var i = 0; i < cells.length; i++) {
+                    row.cells[i].innerHTML = cells[i].value;
+                }
+
+                // Show Edit button
+                var editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.onclick = function () {
+                    editUser(this);
+                };
+                row.lastElementChild.innerHTML = '';
+                row.lastElementChild.appendChild(editButton);
+            } else {
+                alert('Please enter all user details.');
+            }
+        }
+        function scrollToEmployeeTable(elementId) {
+    var element = document.getElementById(elementId);
+    element.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById('createNewForm').style.display = 'none';
+    document.getElementById('userTable').style.display = 'table';
+}
+function notifyUser(button) {
+    var row = button.parentNode.parentNode;
+    var expiryDateString = row.cells[6].textContent;
+    var expiryDate = new Date(expiryDateString);
+    var currentDate = new Date();
+
+    // Calculate difference in days between expiry date and current date
+    var differenceInDays = Math.ceil((expiryDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (differenceInDays <= 1 && differenceInDays >= 0) {
+        button.classList.add('expiring');
+    } else {
+        button.classList.remove('expiring');
+    }
+}
+
+
+
+
+
+    </script>
+</body>
+
+</html>

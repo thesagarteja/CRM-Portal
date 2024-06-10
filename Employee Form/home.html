@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employeee data Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="homefor.css">
+
+</head>
+
+<body>
+    <h1>Employee DataBase</h1>
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>EmployeeId</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>PrimaryAddress</th>
+                <th>SecondaryAddress</th>
+                <th>Gender</th>
+
+                <th>Aadhaar Number</th>
+                <th>PAN Number</th>
+                <th>Role</th>
+
+                <th>Experience</th>
+                <th>Reporting Manager</th>
+                <th>Known Languages</th>
+                <th>Action</th>
+                <th>Notify</th> <!-- New column header for the Notify action -->
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+        </tbody>
+    </table>
+
+    <div id="createNewForm" style="display: none;">
+        <button onclick="scrollToEmployeeTable('userTable')" id="scrollToEmployeeTable">&larr; Return to Table</button>
+
+        <h1 id="title-1">Employee Form</h1>
+        <!-- Input fields for creating new user -->
+    </div>
+
+    <button id="createNewButton" class="my-btn" onclick="showNewUserForm()"><i class="fa-solid fa-plus fa-beat-fade"></i>&nbsp;&nbsp;Create New</button>
+
+    <script>
+        // Existing JavaScript functions
+
+        // Function to create and handle the Notify button
+        function notifyUser(button) {
+            var row = button.parentNode.parentNode;
+            var email = row.cells[2].textContent; // Get the email from the row
+            // Here, you can implement your logic to send a notification to the email address
+            alert("Notification sent to: " + email);
+        }
+    </script>
+</body>
+
+</html>

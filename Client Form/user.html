@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Details</title>
+    <link rel="stylesheet" href="style1.css">
+    <style>
+        .notify-button {
+            background-color: blue;
+            color: white;
+        }
+        .notify-button.expiring {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Client Database Management</h1>
+    <button id="createNewButton" class="my-btn" onclick="showNewUserForm()">Add NewOne</button>
+    <button id="Dashboard" class="my-dash"><a href="../index.html">Dashboard</a></button>
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>Business Name</th>
+                <th>Business Type</th>
+                <th>Business Email</th>
+                <th>Business Phone</th>
+                <th>Domain Name</th>
+                <th>Domain Expiry Date</th>
+                <th>Host Service Provider</th>
+                <th>Hosting Expiry Date</th>
+                <th>Action</th>
+                <th>Notify</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+            <tr id="newUserRow" style="display: none;">
+                <td><input type="text" id="newBusinessName"></td>
+                <td><input type="text" id="newBusinessType"></td>
+                <td><input type="email" id="newBusinessEmail"></td>
+                <td><input type="tel" id="newBusinessPhone"></td>
+                <td><input type="text" id="newDomainName"></td>
+                <td><input type="date" id="newDomainDate"></td>
+                <td><input type="text" id="newHostName"></td>
+                <td><input type="date" id="newExpiryDate"></td>
+                <td><button onclick="saveNewUser()">Save</button></td>
+                <td><button class="notify-button" onclick="notifyUser(this)">Notify</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbx-KT_al2jJWXUy7qeY5yTDbGjVGQrv0B5GultmeX8ES-D8vLbi5KaoFQRx8kTebzkM/exec';
+
+        function showNewUserForm() {
+            var newUserRow = document.getElementById('newUserRow');
+            newUserRow.style.display = 'table-row';
+        }
+
+        function saveNewUser() {
+            var newBusinessName = document.getElementById('newBusinessName').value;
+            var newBusinessType = document.getElementById('newBusinessType').value;
+            var newBusinessEmail = document.getElementById('newBusinessEmail').value;
+            var newBusinessPhone = document.getElementById('newBusinessPhone').value;
+            var newDomainName = document.getElementById('newDomainName').value;
+            var newDomainDate = document.getElementById('newDomainDate').value;
+            var newHostName = document.getElementById('newHostName').value;
+            var newExpiryDate = document.getElementById('newExpiryDate').value;
+
+            if (newBusinessName && newBusinessType && newBusinessEmail && newBusinessPhone && newDomainName && newDomainDate && newHostName && newExpiryDate) {
+                        var newRow = document.createElement('tr');
+                        newRow.innerHTML = `
+                            <td>${newBusinessName}</td>
+                            <td>${newBusinessType}</td>
+                            <td>${newBusinessEmail}</td>
+                            <td>${newBusinessPhone}</td>
+                            <td>${newDomainName}</td>
+                            <td>${newDomainDate}</td>
+                            <td>${newHostName}</td>
+                            <td>${newExpiryDate}</td>
+                            <td>
+                                <button onclick="editUser(this)">Edit</button>
+                                <button onclick="saveUser(this)">Save</button>
+                            </td>
+                            <td><button class="notify-button" onclick="notifyUser(this)">Notify</button></td>
+                        `;
+
+                        var userTableBody = document.getElementById('userTableBody');
+                        userTableBody.appendChild(newRow);
+
+
+                // Send data to Google Sheets
+                fetch(scriptURL, {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                        'BusinessName': newBusinessName,
+                        'BusinessType': newBusinessType,
+                        'BusinessEmail': newBusinessEmail,
+                        'BusinessPhone': newBusinessPhone,
+                        'DomainName': newDomainName,
+                        'DomainDate': newDomainDate,
+                        'HostName': newHostName,
+                        'ExpiryDate': newExpiryDate
+                    })
+                }).then(response => response.text())
+                .then(result => console.log('Success:', result))
+                .catch(error => console.error('Error:', error));
+
+                        // Clear the input fields
+                        document.getElementById('newBusinessName').value = '';
+                        document.getElementById('newBusinessType').value = '';
+                        document.getElementById('newBusinessEmail').value = '';
+                        document.getElementById('newBusinessPhone').value = '';
+                        document.getElementById('newDomainName').value = '';
+                        document.getElementById('newDomainDate').value = '';
+                        document.getElementById('newHostName').value = '';
+                        document.getElementById('newExpiryDate').value = '';
+
+                        // Hide the new user form
+                        document.getElementById('newUserRow').style.display = 'none';
+                    } else {
+                        alert('please fill out all fields');
+                    }
+                } 
+       
+        function editUser(button) {
+            var row = button.parentNode.parentNode;
+            var cells = row.querySelectorAll('td');
+
+            cells[0].innerHTML = `<input type="text" value="${cells[0].textContent}">`;
+            cells[1].innerHTML = `<input type="text" value="${cells[1].textContent}">`;
+            cells[2].innerHTML = `<input type="email" value="${cells[2].textContent}">`;
+            cells[3].innerHTML = `<input type="tel" value="${cells[3].textContent}">`;
+            cells[4].innerHTML = `<input type="text" value="${cells[4].textContent}">`;
+            cells[5].innerHTML = `<input type="date" value="${cells[5].textContent}">`;
+            cells[6].innerHTML = `<input type="text" value="${cells[6].textContent}">`;
+            cells[7].innerHTML = `<input type="date" value="${cells[7].textContent}">`;
+
+            button.style.display = 'none';
+            button.nextElementSibling.style.display = 'inline-block';
+        }
+
+        function saveUser(button) {
+            var row = button.parentNode.parentNode;
+            var cells = row.querySelectorAll('td');
+
+            var newBusinessName = cells[0].querySelector('input').value;
+            var newBusinessType = cells[1].querySelector('input').value;
+            var newBusinessEmail = cells[2].querySelector('input').value;
+            var newBusinessPhone = cells[3].querySelector('input').value;
+            var newDomainName = cells[4].querySelector('input').value;
+            var newDomainDate = cells[5].querySelector('input').value;
+            var newHostName = cells[6].querySelector('input').value;
+            var newExpiryDate = cells[7].querySelector('input').value;
+
+        if (newBusinessName && newBusinessType && newBusinessEmail && newBusinessPhone && newDomainName && newDomainDate && newHostName && newExpiryDate){
+            cells[0].textContent = newBusinessName;
+            cells[1].textContent = newBusinessType;
+            cells[2].textContent = newBusinessEmail;
+            cells[3].textContent = newBusinessPhone;
+            cells[4].textContent = newDomainName;
+            cells[5].textContent = newDomainDate;
+            cells[6].textContent = newHostName;
+            cells[7].textContent = newExpiryDate;
+
+            //show edit button,hide save button
+            button.style.display = 'none';
+            button.previousElementSibling.style.display = 'inline-block';
+        } else {
+            alert('please fill out all fields');
+        }
+    }
+    Swal.fire({
+  title: "Do you want to save the changes?",
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: "Save",
+  denyButtonText: `Don't save`
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    Swal.fire("Saved!", "", "success");
+  } else if (result.isDenied) {
+    Swal.fire("Changes are not saved", "", "info");
+  }
+});
+    </script>
+</body>
+</html> 

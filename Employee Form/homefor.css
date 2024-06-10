@@ -1,0 +1,144 @@
+*{
+    font-family: 'Poppins',sans-serif;
+ 
+}
+.my-dash a{
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    float: inline-start;
+    margin-bottom: 10px;
+}
+.my-dash a:hover{
+    background-color:darkgreen;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    columns: 10%;
+}
+
+#submit{
+    background-color: #4CAF50;
+    color: rgb(34, 34, 34);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 210px;
+    stroke: var(--icon);
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+
+
+}
+#submit:hover{
+    background-color: green;
+}
+table {
+    border-collapse: collapse;
+    font-family: 'Poppins',sans-serif;
+    
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 7px;
+}
+#title{
+    text-align: center;
+    color: #ddd;
+}
+#title-1{
+    padding-left: 10%;
+    color: rgb(68, 55, 55);
+    text-align: center;
+    background-color: antiquewhite;
+    margin-right:34% ;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    margin-top: 1%;
+    border-radius: 10px;
+}
+ th{
+    border: 1px solid black;
+
+}
+tbody{
+    border: 1px solid black;
+}
+table tr td{
+    vertical-align: middle;
+    border: 1px solid black;
+    text-align: center;
+}
+table{
+    font-size: 16px;
+    text-align: center;
+}
+h1{
+    margin-top: 50px;
+    color: rgb(16, 16, 17);
+    text-align: center;
+}
+#createNewForm{
+    position:relative;
+    margin-top: 40px;
+   background-color: rgb(199, 225, 215);
+
+    width: 80%;
+    padding-left: 14%;
+    padding-top: 1%;
+    padding-bottom: 2%;
+    margin-left: 3%;
+    border-radius: 20px;
+
+}
+#createNewButton{
+   background-color: #2d4fc6;
+    color: rgb(10, 10, 10);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 26%;
+    stroke: var(--icon);
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    margin-top: 20px;
+  
+}
+#scrollToEmployeeTable{
+    background-color:rgb(199, 111, 123);
+    color: rgb(10, 10, 10);
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    stroke: var(--icon);
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    margin-top: 20px;
+
+}

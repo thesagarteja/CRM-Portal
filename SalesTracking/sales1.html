@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Tracking System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Sales Tracking System</h1>
+    <button id="createNewButton" class="my-btn" onclick="showNewUserForm()">Add NewOne</button>
+    <button id="Dashboard" class="my-dash"><a href="../index.html">Dashboard</a></button>
+       
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>Business Name</th>
+                <th>Contact Number</th>
+                <th>Email</th>
+                <th>Website Address</th>
+                <th>Physical Address</th>
+                <th>Status</th>
+                <th>Call Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+            <tr id="newUserRow" style="display: none;">
+                <td><input type="text" id="newBusinessName"></td>
+                <td><input type="text" id="newContactName"></td>
+                <td><input type="email" id="newEmail"></td>
+                <td><input type="text" id="newWebsiteAddress"></td>
+                <td><input type="text" id="newPhysicalAddress"></td>
+                <td>
+                    <select id="newStatus">
+                        <option value="Yet to Start">Yet to Start</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Hold">Hold</option>
+                    </select>
+                </td>
+                <td><input type="date" id="newCallDate"></td>
+                <td><button onclick="saveNewUser()" id="submit">Save</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        function showNewUserForm() {
+            var newUserRow = document.getElementById('newUserRow');
+            newUserRow.style.display = 'table-row';
+        }
+    
+        async function saveNewUser() {
+            var newBusinessName = document.getElementById('newBusinessName').value;
+            var newContactName = document.getElementById('newContactName').value;
+            var newEmail = document.getElementById('newEmail').value;
+            var newWebsiteAddress = document.getElementById('newWebsiteAddress').value;
+            var newPhysicalAddress = document.getElementById('newPhysicalAddress').value;
+            var newStatus = document.getElementById('newStatus').value;
+            var newCallDate = document.getElementById('newCallDate').value;
+    
+            if (newBusinessName && newContactName && newEmail && newWebsiteAddress && newPhysicalAddress && newStatus && newCallDate) {
+                const data = {
+                    businessName: newBusinessName,
+                    contactName: newContactName,
+                    email: newEmail,
+                    websiteAddress: newWebsiteAddress,
+                    physicalAddress: newPhysicalAddress,
+                    status: newStatus,
+                    callDate: newCallDate
+                };
+    
+                const response = await fetch('YOUR_WEB_APP_URL', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+    
+                const result = await response.json();
+                if (result.result === 'success') {
+                    alert('Data saved successfully');
+    
+                    var newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${newBusinessName}</td>
+                        <td>${newContactName}</td>
+                        <td>${newEmail}</td>
+                        <td>${newWebsiteAddress}</td>
+                        <td>${newPhysicalAddress}</td>
+                        <td>${newStatus}</td>
+                        <td>${newCallDate}</td>
+                        <td>
+                            <button onclick="editUser(this)">Edit</button>
+                            <button onclick="saveUser(this)" style="display:none;">Save</button>
+                        </td>
+                    `;
+    
+                    var userTableBody = document.getElementById('userTableBody');
+                    userTableBody.appendChild(newRow);
+    
+                    // Clear the input fields
+                    document.getElementById('newBusinessName').value = '';
+                    document.getElementById('newContactName').value = '';
+                    document.getElementById('newEmail').value = '';
+                    document.getElementById('newWebsiteAddress').value = '';
+                    document.getElementById('newPhysicalAddress').value = '';
+                    document.getElementById('newStatus').value = 'Yet to Start';
+                    document.getElementById('newCallDate').value = '';
+    
+                    // Hide the new user form
+                    document.getElementById('newUserRow').style.display = 'none';
+                } else {
+                    alert('Failed to save data');
+                }
+            } else {
+                alert('Please fill out all fields.');
+            }
+        }
+    
+        function editUser(button) {
+            var row = button.parentNode.parentNode;
+            var cells = row.querySelectorAll('td');
+    
+            cells[0].innerHTML = `<input type="text" value="${cells[0].textContent}">`;
+            cells[1].innerHTML = `<input type="text" value="${cells[1].textContent}">`;
+            cells[2].innerHTML = `<input type="email" value="${cells[2].textContent}">`;
+            cells[3].innerHTML = `<input type="text" value="${cells[3].textContent}">`;
+            cells[4].innerHTML = `<input type="text" value="${cells[4].textContent}">`;
+            cells[5].innerHTML = `
+                <select>
+                    <option value="Yet to Start" ${cells[5].textContent === 'Yet to Start' ? 'selected' : ''}>Yet to Start</option>
+                    <option value="In Progress" ${cells[5].textContent === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                    <option value="Completed" ${cells[5].textContent === 'Completed' ? 'selected' : ''}>Completed</option>
+                    <option value="Hold" ${cells[5].textContent === 'Hold' ? 'selected' : ''}>Hold</option>
+                </select>
+            `;
+            cells[6].innerHTML = `<input type="date" value="${cells[6].textContent}">`;
+    
+            // Hide Edit button, show Save button
+            button.style.display = 'none';
+            button.nextElementSibling.style.display = 'inline-block';
+        }
+    
+        function saveUser(button) {
+            var row = button.parentNode.parentNode;
+            var cells = row.querySelectorAll('td');
+    
+            var newBusinessName = cells[0].querySelector('input').value;
+            var newContactName = cells[1].querySelector('input').value;
+            var newEmail = cells[2].querySelector('input').value;
+            var newWebsiteAddress = cells[3].querySelector('input').value;
+            var newPhysicalAddress = cells[4].querySelector('input').value;
+            var newStatus = cells[5].querySelector('select').value;
+            var newCallDate = cells[6].querySelector('input').value;
+    
+            if (newBusinessName && newContactName && newEmail && newWebsiteAddress && newPhysicalAddress && newStatus && newCallDate) {
+                cells[0].innerHTML = newBusinessName;
+                cells[1].innerHTML = newContactName;
+                cells[2].innerHTML = newEmail;
+                cells[3].innerHTML = newWebsiteAddress;
+                cells[4].innerHTML = newPhysicalAddress;
+                cells[5].innerHTML = newStatus;
+                cells[6].innerHTML = newCallDate;
+    
+                // Show Edit button, hide Save button
+                button.style.display = 'none';
+                button.previousElementSibling.style.display = 'inline-block';
+            } else {
+                alert('Please fill out all fields.');
+            }
+        }
+    </script>
+    
+   
+</body>
+
+</html>

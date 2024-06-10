@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Action Tracking System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Action Tracking System</h1>
+    <button id="createNewButton" class="my-btn" onclick="showNewUserForm()">Add New One</button>
+    <button id="Dashboard" class="my-dash"><a href="../index.html">Dashboard</a></button>
+
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>Action Item</th>
+                <th>Owner</th>
+                <th>Target Date</th>
+                <th>Status</th>
+                <th>Comments</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+            <tr id="newUserRow" style="display: none;">
+                <td><input type="text" id="newActionItem"></td>
+                <td><input type="text" id="newOwner"></td>
+                <td><input type="date" id="newTargetDate"></td>
+                <td>
+                    <select id="newStatus">
+                        <option value="Yet to Start">Yet to Start</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Hold">Hold</option>
+                    </select>
+                </td>
+                <td><input type="text" id="newComments"></td>
+                <td><button onclick="saveNewUser()" id="submit">Save</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbw-5bzy1Eo-YzKUlS-Trhm7PcxkzE5j6kA_LfvhAvj4j57JDEaXeCPXwEjHOei74xWBLA/exec';
+
+        function showNewUserForm() {
+            var newUserRow = document.getElementById('newUserRow');
+            newUserRow.style.display = 'table-row';
+        }
+
+        function saveNewUser() {
+            var newActionItem = document.getElementById('newActionItem').value;
+            var newOwner = document.getElementById('newOwner').value;
+            var newTargetDate = document.getElementById('newTargetDate').value;
+            var newStatus = document.getElementById('newStatus').value;
+            var newComments = document.getElementById('newComments').value;
+
+            if (newActionItem && newOwner && newTargetDate && newStatus && newComments) {
+                var newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${newActionItem}</td>
+                    <td>${newOwner}</td>
+                    <td>${newTargetDate}</td>
+                    <td>${newStatus}</td>
+                    <td>${newComments}</td>
+                    <td>
+                        <button onclick="editUser(this)">Edit</button>
+                        <button onclick="saveUser(this)" style="display:none;">Save</button>
+                    </td>
+                `;
+
+                var userTableBody = document.getElementById('userTableBody');
+                userTableBody.appendChild(newRow);
+
+                // Send data to Google Sheets
+                fetch(scriptURL, {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                        'actionItem': newActionItem,
+                        'owner': newOwner,
+                        'targetDate': newTargetDate,
+                        'status': newStatus,
+                        'comments': newComments
+                    })
+                }).then(response => response.text())
+                .then(result => console.log('Success:', result))
+                .catch(error => console.error('Error:', error));
+
+                // Clear the input fields
+                document.getElementById('newActionItem').value = '';
+                document.getElementById('newOwner').value = '';
+                document.getElementById('newTargetDate').value = '';
+                document.getElementById('newStatus').value = 'Yet to Start';
+                document.getElementById('newComments').value = '';
+
+                // Hide the new user form
+                document.getElementById('newUserRow').style.display = 'none';
+            } else {
+                alert('Please fill out all fields.');
+            }
+        }
+
+        function editUser(button) {
+            var row = button.parentNode.parentNode;
+            var cells = row.querySelectorAll('td');
+
+            cells[0].innerHTML = `<input type="text" value="${cells[0].textContent}">`;
+            cells[1].innerHTML = `<input type="text" value="${cells[1].textContent}">`;
+            cells[2].innerHTML = `<input type="date" value="${cells[2].textContent}">`;
+            cells[3].innerHTML = `
+                <select>
+                    <option value="Yet to Start" ${cells[3].textContent === 'Yet to Start' ? 'selected' : ''}>Yet to Start</option>
+                    <option value="In Progress" ${cells[3].textContent === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                    <option value="Completed" ${cells[3].textContent === 'Completed' ? 'selected' : ''}>Completed</option>
+                    <option value="Hold" ${cells[3].textContent === 'Hold' ? 'selected' : ''}>Hold</option>
+                </select>
+            `;
+            cells[4].innerHTML = `<input type="text" value="${cells[4].textContent}">`;
+
+            // Hide Edit button, show Save button
+            button.style.display = 'none';
+            button.nextElementSibling.style.display = 'inline-block';
+        }
+
+        function saveUser(button) {
+            var row = button.parentNode.parentNode;
+            var cells = row.querySelectorAll('td');
+
+            var newActionItem = cells[0].querySelector('input').value;
+            var newOwner = cells[1].querySelector('input').value;
+            var newTargetDate = cells[2].querySelector('input').value;
+            var newStatus = cells[3].querySelector('select').value;
+            var newComments = cells[4].querySelector('input').value;
+
+            if (newActionItem && newOwner && newTargetDate && newStatus && newComments) {
+                cells[0].innerHTML = newActionItem;
+                cells[1].innerHTML = newOwner;
+                cells[2].innerHTML = newTargetDate;
+                cells[3].innerHTML = newStatus;
+                cells[4].innerHTML = newComments;
+
+                // Show Edit button, hide Save button
+                button.style.display = 'none';
+                button.previousElementSibling.style.display = 'inline-block';
+            } else {
+                alert('Please fill out all fields.');
+            }
+        }
+    </script>
+</body>
+
+</html>
